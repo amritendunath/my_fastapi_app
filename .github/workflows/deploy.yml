@@ -18,5 +18,6 @@ jobs:
             cd my_fastapi_app
             git pull origin main
             docker build -t my_fastapi_app .
-            docker stop $(docker ps -q --filter ancestor=my_fastapi_app) || true
+            docker ps -q --filter "publish=8000" | xargs -r docker stop
+            docker ps -aq --filter "publish=8000" | xargs -r docker rm
             docker run -d -p 8000:8000 my_fastapi_app
